@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dynamic-dns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dynamic-dns
+  template:
+    metadata:
+      labels:
+        app: dynamic-dns
+    spec:
+      containers:
+        - name: dynamic-dns
+          image: qmcgaw/ddns-updater
+          env:
+            - name: CONFIG
+              value: '
+                {
+                  "settings": [
+                    {
+                        "provider": "namecheap",
+                        "domain": "$DOMAIN",
+                        "host": "@",
+                        "password": ""
+                    },
+                ]
+            }'
